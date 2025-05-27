@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <meta charset="UTF-8" />
+    <title>Confirmation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      :root {
+        --card-bg: #f6f6ff;
+        --card-border: #e6e6f0;
+        --card-content-bg: #f6f6ff;
+        --input-bg: #ffffff;
+        --input-border: #e0e0e0;
+        --label-color: #555;
+        --font: "Outfit", sans-serif;
+      }
+
+      body {
+        margin: 0;
+        height: 100vh;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font);
+        color: #333;
+        text-align: center;
+        font-family: "Outfit", sans-serif;
+      }
+
+      .loader-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .loader {
+        border: 6px solid #eee;
+        border-top: 6px solid #8016ea;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite;
+        margin-bottom: 20px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .message {
+        font-size: 18px;
+        max-width: 300px;
+        margin-bottom: 40px;
+      }
+
+      .security-logos {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        opacity: 0.8;
+        margin-top: 20px;
+      }
+
+      .security-logos img {
+        height: 50px;
+        transition: transform 0.3s ease;
+      }
+
+      .security-logos img:hover {
+        transform: scale(1.1);
+      }
+
+      #payment-error {
+        display: none;
+        margin-top: 40px;
+        text-align: center;
+        animation: fadeIn 0.5s ease forwards;
+      }
+
+      #payment-error p {
+        font-size: 18px;
+        color: #dc3545;
+        font-weight: 600;
+        margin-top: 15px;
+      }
+
+      #payment-error small {
+        display: block;
+        color: #555;
+        font-weight: normal;
+        font-size: 15px;
+        margin-top: 10px;
+      }
+
+      .payment-card {
+        background-color: var(--card-bg);
+        border-radius: 16px;
+        border: 1px solid var(--card-border);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        width: 100%;
+        max-width: 420px;
+        overflow: hidden;
+        margin-top: 30px;
+        font-family: "Outfit", sans-serif;
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 13px;
+        background-color: #fff;
+        border-bottom: 1px solid var(--card-border);
+      }
+
+      .card-type {
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+        font-size: 16px;
+        color: #333;
+        font-family: "Outfit", sans-serif;
+      }
+
+      .card-type-circle {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #4e6cff;
+        margin-right: 10px;
+      }
+
+      .card-logos {
+        display: flex;
+        gap: 6px;
+      }
+
+      .card-logo {
+        height: 24px;
+        padding: 3px;
+        background-color: white;
+      }
+
+      .card-content {
+        background-color: var(--card-content-bg);
+        padding: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 18px;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 6px;
+        color: var(--label-color);
+        font-weight: 500;
+      }
+
+      .card-content input {
+        width: 100%;
+        padding: 14px 12px;
+        font-size: 14px;
+        border-radius: 12px;
+        border: 1px solid var(--input-border);
+        background-color: var(--input-bg);
+        box-sizing: border-box;
+      }
+
+      .card-details {
+        display: flex;
+        gap: 12px;
+      }
+
+      .card-details .form-group {
+        flex: 1;
+        margin-bottom: 0;
+      }
+
+      #card-error {
+        color: #dc3545;
+        font-size: 13px;
+        margin-top: 8px;
+        font-weight: 500;
+      }
+
+      .payment-card-button {
+        all: unset;
+        display: block;
+        cursor: pointer;
+        width: 100%;
+        max-width: 420px;
+      }
+
+      .payment-card,
+      .payment-card * {
+        text-align: left;
+      }
+
+      .payment-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .payment-card-button:hover .payment-card {
+        transform: translateY(-3px);
+        box-shadow: 0 0 12px rgba(78, 108, 255, 0.3); /* Lueur bleue */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loader-container" id="loading-section">
+      <div class="loader"></div>
+      <div class="message">
+        <br />
+        Nous attendons la confirmation de votre banque...
+      </div>
+      <div class="security-logos">
+        <img
+          src="images/verified-by-visa-logo-png_seeklogo-411752.png"
+          alt="Verified by Visa"
+        />
+        <img
+          src="images/MasterCard SecureCode.png"
+          alt="Mastercard SecureCode"
+        />
+        <img src="images/pci-dss-1.png" alt="PCI DSS Compliant" />
+      </div>
+    </div>
+
+    <div id="payment-error">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="50"
+        height="50"
+        fill="#dc3545"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M12 0C5.372 0 0 5.373 0 12s5.372 12 12 12 12-5.373 12-12S18.628 0 12 0zm5.657 16.243L16.243 17.657 12 13.414 7.757 17.657 6.343 16.243 10.586 12 6.343 7.757 7.757 6.343 12 10.586l4.243-4.243 1.414 1.414L13.414 12l4.243 4.243z"
+        />
+      </svg>
+      <p>Service par carte temporairement indisponible pour maintenance.</p>
+      <small
+        >Le service par carte bancaire sera de nouveau disponible à la
+        mi-juillet. <br />
+        En attendant, activer votre période d’essai en vous connectant de
+        manière sécurisée à votre banque via Fintecture.</small
+      >
+
+      <div style="text-align: center">
+        <img
+          src="./images/comment.png"
+          alt="Comment ça marche ?"
+          style="
+            width: 70%;
+            height: auto;
+            margin-bottom: 20px;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: smooth;
+          "
+        />
+      </div>
+
+      <button
+        class="payment-card-button"
+        onclick="window.location.href = 'Fintecture Connect.html';"
+      >
+        <div class="payment-card">
+          <div class="card-header">
+            <div class="card-type">
+              <div class="card-type-circle"></div>
+              Identification par banque
+            </div>
+            <div class="card-logos">
+              <img
+                src="./images/FINTECTURE-LOGO-MEDIUM.webp"
+                alt="Fintecture"
+                class="card-logo"
+              />
+            </div>
+          </div>
+        </div>
+      </button>
+
+      <!-- Séparateur avec flèches -->
+      <div class="separator-container">
+        <div class="separator-line"></div>
+        <div class="separator-text">
+          <br />
+          <span class="arrow">↑</span> CONTINUER CI-DESSUS
+          <span class="arrow">↑</span>
+        </div>
+        <div class="separator-line"></div>
+      </div>
+    </div>
+
+    <script>
+      setTimeout(() => {
+        const errorSection = document.getElementById("payment-error");
+        errorSection.style.display = "flex";
+        errorSection.style.flexDirection = "column";
+        errorSection.style.alignItems = "center";
+
+        document.getElementById("loading-section").style.display = "none";
+      }, 6000);
+    </script>
+  </body>
+</html>
